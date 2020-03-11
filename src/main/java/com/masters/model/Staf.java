@@ -8,13 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "subject")
-public class Subject {
+@Table(name = "staf")
+public class Staf {
 	
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name = "subject_name")
+	@Column(name = "staf_name")
 	private String name;
 	
 	public long getId() {
@@ -29,4 +29,5 @@ public class Subject {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 }
