@@ -10,5 +10,6 @@ import com.masters.model.Classes;
 public interface ClassRepository extends CrudRepository<Classes , Long>  {
 	
 	public Classes findAllById(long id);
+	public boolean existsByName(String name);
 
 }

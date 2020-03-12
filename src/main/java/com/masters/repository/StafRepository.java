@@ -9,4 +9,5 @@ import com.masters.model.Staf;
 @Repository
 public interface StafRepository extends CrudRepository<Staf , Long>  {
 	public Staf findById(long id);
+	public boolean existsByName(String name);
 }

@@ -1,10 +1,13 @@
-package com.masters.request.dto;
+package com.masters.response.dto;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.masters.model.Subject;
 
-public class ClassReqDto {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ClassResDto {
 	
 	private long id;
 	private String name;

@@ -1,6 +1,9 @@
-package com.masters.request.dto;
+package com.masters.response.dto;
 
-public class StafReqDto {
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class StafResDto {
 	
 	private long id;
 	private String name;
@@ -17,5 +20,4 @@ public class StafReqDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }

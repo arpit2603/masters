@@ -1,5 +1,6 @@
 package com.masters.service;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import com.masters.model.Classes;
 import com.masters.repository.ClassRepository;
 import com.masters.request.dto.ClassReqDto;
 import com.masters.response.dto.AppResponse;
+import com.masters.response.dto.ClassResDto;
 
 @Service
 public class ClassService {
@@ -24,36 +26,54 @@ public class ClassService {
 	
 	public AppResponse addClasses(ClassReqDto classReq) {
 		AppResponse appResponse = masterConf.getAppResponse();
-		Classes classes = masterConf.getObjectMapper().convertValue(classReq, Classes.class);
-		classes = classRepo.save(classes);
-		if(classes != null) {
-			appResponse.setStatus(true);
-			appResponse.setMessage(message.get("class.register"));
-			appResponse.setStatusCode(200);
+		ObjectMapper mapper = masterConf.getObjectMapper();
+		if(!classRepo.existsByName(classReq.getName())) {
+			Classes classes = mapper.convertValue(classReq, Classes.class);
+			classes = classRepo.save(classes);
+			if(classes != null) {
+				appResponse.setStatus(true);
+				appResponse.setMessage(message.get("class.register"));
+				appResponse.setStatusCode(200);
+			}else {
+				appResponse.setStatus(false);
+				appResponse.setMessage(message.get("class.register.error"));
+				appResponse.setStatusCode(500);
+			}
 		}else {
 			appResponse.setStatus(false);
-			appResponse.setMessage(message.get("class.register.error"));
-			appResponse.setStatusCode(500);
+			appResponse.setMessage(message.get("class.register.exist.error"));
+			appResponse.setData(mapper.convertValue(classReq, ClassResDto.class));
+			appResponse.setStatusCode(200);
 		}
 		return appResponse;
 	}
 	
 	public AppResponse updateClasses(ClassReqDto classReq) {
 		AppResponse appResponse = masterConf.getAppResponse();
-		Classes classes = masterConf.getObjectMapper().convertValue(classReq, Classes.class);
-		classRepo.save(classes);
-		appResponse.setStatus(true);
-		appResponse.setMessage(message.get("class.register"));
-		appResponse.setStatusCode(200);
+		ObjectMapper mapper = masterConf.getObjectMapper();
+		if(!classRepo.existsByName(classReq.getName())) {
+			Classes classes = mapper.convertValue(classReq, Classes.class);
+			classRepo.save(classes);
+			appResponse.setStatus(true);
+			appResponse.setMessage(message.get("class.update"));
+			appResponse.setStatusCode(200);
+		}else {
+			appResponse.setStatus(false);
+			appResponse.setMessage(message.get("class.register.exist.error"));
+			appResponse.setData(mapper.convertValue(classReq, ClassResDto.class));
+			appResponse.setStatusCode(200);
+		}
 		return appResponse;
 	}
 	
 	public AppResponse getClasses(long id) {
 		AppResponse appResponse = masterConf.getAppResponse();
+		ObjectMapper mapper = masterConf.getObjectMapper();
 		Classes classes = classRepo.findAllById(id);
 		if(classes == null) {
 			appResponse.setStatus(true);
 			appResponse.setMessage(message.get("class.get"));
+			appResponse.setData(mapper.convertValue(classes, ClassResDto.class));
 			appResponse.setStatusCode(200);
 		}else {
 			appResponse.setStatus(false);

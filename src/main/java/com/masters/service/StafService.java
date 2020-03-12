@@ -1,6 +1,6 @@
 package com.masters.service;
 
-
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +10,7 @@ import com.masters.model.Staf;
 import com.masters.repository.StafRepository;
 import com.masters.request.dto.StafReqDto;
 import com.masters.response.dto.AppResponse;
+import com.masters.response.dto.StafResDto;
 
 @Service
 public class StafService {
@@ -25,42 +26,63 @@ public class StafService {
 	
 	public AppResponse addStaf(StafReqDto stafReq) {
 		AppResponse appResponse = masterConf.getAppResponse();
-		Staf staf = masterConf.getObjectMapper().convertValue(stafReq, Staf.class);
-		staf = stafRepo.save(staf);
-		if(staf != null) {
-			appResponse.setStatus(true);
-			appResponse.setMessage(message.get("staf.register"));
-			appResponse.setStatusCode(200);
+		ObjectMapper mapper = masterConf.getObjectMapper();
+		if(!stafRepo.existsByName(stafReq.getName())) {
+			Staf staf = mapper.convertValue(stafReq, Staf.class);
+			staf = stafRepo.save(staf);
+			if(staf != null && staf.getId() > 0) {
+				appResponse.setStatus(true);
+				appResponse.setMessage(message.get("staf.register"));
+				appResponse.setData(mapper.convertValue(staf, StafResDto.class));
+				appResponse.setStatusCode(200);
+			}else {
+				appResponse.setStatus(false);
+				appResponse.setMessage(message.get("staf.register.db.error"));
+				appResponse.setStatusCode(500);
+			}
 		}else {
 			appResponse.setStatus(false);
-			appResponse.setMessage(message.get("staf.register.error"));
-			appResponse.setStatusCode(500);
+			appResponse.setMessage(message.get("staf.register.exist.error"));
+			appResponse.setData(mapper.convertValue(stafReq, StafResDto.class));
+			appResponse.setStatusCode(200);
 		}
 		return appResponse;
 	}
 	
 	public AppResponse updateStaf(StafReqDto stafReq) {
 		AppResponse appResponse = masterConf.getAppResponse();
-		Staf staf = masterConf.getObjectMapper().convertValue(stafReq, Staf.class);
-		staf = stafRepo.save(staf);
-		if(staf != null) {
-			appResponse.setStatus(true);
-			appResponse.setMessage(message.get("staf.update"));
-			appResponse.setStatusCode(200);
+		ObjectMapper mapper = masterConf.getObjectMapper();
+		if(!stafRepo.existsByName(stafReq.getName())) {
+			Staf staf = mapper.convertValue(stafReq, Staf.class);
+			staf = stafRepo.save(staf);
+			if(staf != null) {
+				appResponse.setStatus(true);
+				appResponse.setMessage(message.get("staf.update"));
+				appResponse.setData(mapper.convertValue(staf, StafResDto.class));
+				appResponse.setStatusCode(200);
+			}else {
+				appResponse.setStatus(false);
+				appResponse.setMessage(message.get("staf.update.error"));
+				appResponse.setData(mapper.convertValue(stafReq, StafResDto.class));
+				appResponse.setStatusCode(500);
+			}
 		}else {
 			appResponse.setStatus(false);
-			appResponse.setMessage(message.get("staf.update.error"));
-			appResponse.setStatusCode(500);
+			appResponse.setMessage(message.get("staf.register.exist.error"));
+			appResponse.setData(mapper.convertValue(stafReq, StafResDto.class));
+			appResponse.setStatusCode(200);
 		}
 		return appResponse;
 	}
 	
 	public AppResponse getStaf(long id) {
 		AppResponse appResponse = masterConf.getAppResponse();
+		ObjectMapper mapper = masterConf.getObjectMapper();
 		Staf staf = stafRepo.findById(id);
-		if(staf == null) {
+		if(staf != null) {
 			appResponse.setStatus(true);
 			appResponse.setMessage(message.get("staf.get"));
+			appResponse.setData(mapper.convertValue(staf, StafResDto.class));
 			appResponse.setStatusCode(200);
 		}else {
 			appResponse.setStatus(false);
@@ -78,7 +100,6 @@ public class StafService {
 		appResponse.setData(stafList);
 		appResponse.setMessage(message.get("staf.get.all"));
 		return appResponse;
-		
 	}
 }
 

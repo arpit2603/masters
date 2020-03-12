@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,9 +18,12 @@ public class Classes {
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name = "class_name")
+	@Column(name = "class_name" , unique = true , nullable = false)
 	private String name;
-	private List<Subject> subjectList;
+	
+	@OneToMany
+	@JoinTable(name = "class_subjects")
+	private List<Subject> subjects;
 	
 	
 	public long getId() {
@@ -33,11 +38,11 @@ public class Classes {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<Subject> getSubjectList() {
-		return subjectList;
+	public List<Subject> getSubjects() {
+		return subjects;
 	}
-	public void setSubjectList(List<Subject> subjectList) {
-		this.subjectList = subjectList;
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
 	}
 	
 }

@@ -10,5 +10,5 @@ import com.masters.model.Subject;
 public interface SubjectRepository extends CrudRepository<Subject , Long> {
 	
 	public Subject findById(long id);
-
+	public boolean existsByName(String name);
 }

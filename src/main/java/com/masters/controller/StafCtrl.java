@@ -3,6 +3,9 @@ package com.masters.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,23 +21,23 @@ public class StafCtrl {
 	@Autowired
 	StafService stafService;
 	
-	@RequestMapping(value = "/add")
+	@PostMapping(value = "/add")
 	public ResponseEntity<?> addStaf(@RequestBody StafReqDto stafReq) {
 		return new ResponseEntity<AppResponse>(stafService.addStaf(stafReq) , HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/update")
+	@PostMapping(value = "/update")
 	public ResponseEntity<?> updateStaf(@RequestBody StafReqDto stafReq) {
 		return new ResponseEntity<AppResponse>(stafService.updateStaf(stafReq) , HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/get/{id}")
-	public void getStaf() {
-		
+	@GetMapping(value = "/get/{id}")
+	public ResponseEntity<?> getStaf(@PathVariable("id") long id) {
+		return new ResponseEntity<AppResponse>(stafService.getStaf(id) , HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/getAll")
-	public void getAllStaf() {
-		
+	@GetMapping(value = "/getAll")
+	public ResponseEntity<?> getAllStaf() {
+		return new ResponseEntity<AppResponse>(stafService.getAllStaf() , HttpStatus.OK);
 	}
 }
