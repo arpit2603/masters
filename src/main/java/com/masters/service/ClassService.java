@@ -33,6 +33,7 @@ public class ClassService {
 			if(classes != null) {
 				appResponse.setStatus(true);
 				appResponse.setMessage(message.get("class.register"));
+				appResponse.setData(mapper.convertValue(classes, ClassResDto.class));
 				appResponse.setStatusCode(200);
 			}else {
 				appResponse.setStatus(false);
@@ -56,6 +57,7 @@ public class ClassService {
 			classRepo.save(classes);
 			appResponse.setStatus(true);
 			appResponse.setMessage(message.get("class.update"));
+			appResponse.setData(mapper.convertValue(classes, ClassResDto.class));
 			appResponse.setStatusCode(200);
 		}else {
 			appResponse.setStatus(false);
@@ -70,7 +72,7 @@ public class ClassService {
 		AppResponse appResponse = masterConf.getAppResponse();
 		ObjectMapper mapper = masterConf.getObjectMapper();
 		Classes classes = classRepo.findAllById(id);
-		if(classes == null) {
+		if(classes != null) {
 			appResponse.setStatus(true);
 			appResponse.setMessage(message.get("class.get"));
 			appResponse.setData(mapper.convertValue(classes, ClassResDto.class));
