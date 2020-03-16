@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class InterceptorRegistry extends WebMvcConfigurerAdapter {
 	
 	@Autowired
-	MasterIntercepter masterInterceptor;
+	TokenExpireIntercepter masterInterceptor;
 	
 	@Override
 	public void addInterceptors(org.springframework.web.servlet.config.annotation.InterceptorRegistry registry) {

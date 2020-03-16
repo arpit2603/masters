@@ -19,7 +19,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.masters.response.dto.AppResponse;
 
 @Component
-public class MasterIntercepter implements HandlerInterceptor {
+public class TokenExpireIntercepter implements HandlerInterceptor {
 	
 	@Autowired
 	MasterConf masterConf;
