@@ -1,8 +1,11 @@
 package com.masters.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,12 +25,18 @@ public class StafCtrl {
 	StafService stafService;
 	
 	@PostMapping(value = "/add")
-	public ResponseEntity<?> addStaf(@RequestBody StafReqDto stafReq) {
+	public ResponseEntity<?> addStaf(@RequestBody @Valid StafReqDto stafReq , BindingResult bindResult) {
+		if(bindResult.hasErrors()) {
+			return new ResponseEntity<AppResponse>(stafService.getErrors(bindResult),HttpStatus.OK);
+		}
 		return new ResponseEntity<AppResponse>(stafService.addStaf(stafReq) , HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/update")
-	public ResponseEntity<?> updateStaf(@RequestBody StafReqDto stafReq) {
+	public ResponseEntity<?> updateStaf(@RequestBody @Valid StafReqDto stafReq , BindingResult bindResult) {
+		if(bindResult.hasErrors()) {
+			return new ResponseEntity<AppResponse>(stafService.getErrors(bindResult),HttpStatus.OK);
+		}
 		return new ResponseEntity<AppResponse>(stafService.updateStaf(stafReq) , HttpStatus.OK);
 	}
 	

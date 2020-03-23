@@ -1,8 +1,12 @@
 package com.masters.request.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class SubjectReqDto {
 	
 	private long id;
+	
+	@NotEmpty(message = "{subject.name.error}")
 	private String name;
 	
 	public long getId() {

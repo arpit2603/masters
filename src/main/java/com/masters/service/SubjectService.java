@@ -3,7 +3,9 @@ package com.masters.service;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
+import com.masters.service.CommonService;
 import com.masters.conf.MasterConf;
 import com.masters.conf.Messages;
 import com.masters.model.Subject;
@@ -23,6 +25,9 @@ public class SubjectService {
 	
 	@Autowired
 	Messages message;
+	
+	@Autowired
+	CommonService commonService;
 	
 	public AppResponse addSubject(SubjectReqDto subjectReq) {
 		AppResponse appResponse = masterConf.getAppResponse();
@@ -76,6 +81,14 @@ public class SubjectService {
 			appResponse.setStatusCode(200);
 			appResponse.setMessage(message.get("subject.get.error"));
 		}
+		return appResponse;
+	}
+	
+	public AppResponse getErrors(BindingResult bindResult) {
+		AppResponse appResponse = masterConf.getAppResponse();
+		appResponse.setStatus(false);
+		appResponse.setErrors(commonService.getErrors(bindResult));
+		appResponse.setMessage(message.get("bind.error.message"));
 		return appResponse;
 	}
 

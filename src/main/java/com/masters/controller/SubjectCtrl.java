@@ -1,8 +1,11 @@
 package com.masters.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,12 +25,18 @@ public class SubjectCtrl {
 	SubjectService subjectService;
 	
 	@PostMapping(value = "/add")
-	public ResponseEntity<?> addSubject(@RequestBody SubjectReqDto subjectReq){
+	public ResponseEntity<?> addSubject(@RequestBody @Valid SubjectReqDto subjectReq , BindingResult bindResult){
+		if(bindResult.hasErrors()) {
+			return new ResponseEntity<AppResponse>(subjectService.getErrors(bindResult),HttpStatus.OK);
+		}
 		return new ResponseEntity<AppResponse>(subjectService.addSubject(subjectReq),HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/update")
-	public ResponseEntity<?> updateSubject(@RequestBody SubjectReqDto subjectReq){
+	public ResponseEntity<?> updateSubject(@RequestBody @Valid SubjectReqDto subjectReq  , BindingResult bindResult){
+		if(bindResult.hasErrors()) {
+			return new ResponseEntity<AppResponse>(subjectService.getErrors(bindResult),HttpStatus.OK);
+		}
 		return new ResponseEntity<AppResponse>(subjectService.updateSubject(subjectReq),HttpStatus.OK);
 	}
 	

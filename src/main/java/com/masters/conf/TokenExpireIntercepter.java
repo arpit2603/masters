@@ -32,7 +32,7 @@ public class TokenExpireIntercepter implements HandlerInterceptor {
 		String token = request.getHeader("tkn");
 		String requestIp = request.getRemoteAddr();
 		long currentTime = new Date().getTime();
-		URL url = new URL("http://localhost:8080/lognmanager/token/expired");
+		URL url = new URL(masterConf.getLognmanagerHost()+"lognmanager/token/expired");
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setDoOutput(true);
 		conn.setRequestMethod("POST");

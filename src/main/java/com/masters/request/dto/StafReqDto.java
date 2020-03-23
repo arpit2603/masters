@@ -1,8 +1,11 @@
 package com.masters.request.dto;
 
+import javax.validation.constraints.NotEmpty;
+
 public class StafReqDto {
 	
 	private long id;
+	@NotEmpty(message = "{staf.name.error}")
 	private String name;
 	
 	public long getId() {

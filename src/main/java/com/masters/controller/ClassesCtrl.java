@@ -1,8 +1,11 @@
 package com.masters.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,12 +25,18 @@ public class ClassesCtrl {
 	ClassService classService;
 	
 	@PostMapping(value = "/add")
-	public ResponseEntity<?> addClasses(@RequestBody ClassReqDto classReq){
+	public ResponseEntity<?> addClasses(@RequestBody @Valid ClassReqDto classReq , BindingResult bindResult){
+		if(bindResult.hasErrors()) {
+			return new ResponseEntity<AppResponse>(classService.getErrors(bindResult),HttpStatus.OK);
+		}
 		return new ResponseEntity<AppResponse>(classService.addClasses(classReq),HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/update")
-	public ResponseEntity<?> updateClasses(@RequestBody ClassReqDto classReq){
+	public ResponseEntity<?> updateClasses(@RequestBody @Valid ClassReqDto classReq , BindingResult bindResult){
+		if(bindResult.hasErrors()) {
+			return new ResponseEntity<AppResponse>(classService.getErrors(bindResult),HttpStatus.OK);
+		}
 		return new ResponseEntity<AppResponse>(classService.updateClasses(classReq),HttpStatus.OK);
 	}
 	

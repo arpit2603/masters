@@ -2,12 +2,17 @@ package com.masters.request.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+
 import com.masters.model.Subject;
 
 public class ClassReqDto {
 	
 	private long id;
+	
+	@NotEmpty(message = "{class.name.error}")
 	private String name;
+	
 	private List<Subject> subjects;
 	
 	public long getId() {

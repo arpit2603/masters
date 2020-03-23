@@ -3,6 +3,7 @@ package com.masters.service;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import com.masters.conf.MasterConf;
 import com.masters.conf.Messages;
@@ -23,6 +24,9 @@ public class StafService {
 	
 	@Autowired
 	Messages message;
+	
+	@Autowired
+	CommonService commonService;
 	
 	public AppResponse addStaf(StafReqDto stafReq) {
 		AppResponse appResponse = masterConf.getAppResponse();
@@ -99,6 +103,14 @@ public class StafService {
 		appResponse.setStatusCode(200);
 		appResponse.setData(stafList);
 		appResponse.setMessage(message.get("staf.get.all"));
+		return appResponse;
+	}
+	
+	public AppResponse getErrors(BindingResult bindResult) {
+		AppResponse appResponse = masterConf.getAppResponse();
+		appResponse.setStatus(false);
+		appResponse.setErrors(commonService.getErrors(bindResult));
+		appResponse.setMessage(message.get("bind.error.message"));
 		return appResponse;
 	}
 }
